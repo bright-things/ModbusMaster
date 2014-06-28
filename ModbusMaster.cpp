@@ -33,7 +33,7 @@ Arduino library for communicating with Modbus slaves over RS232/485 (via RTU pro
 
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
-HardwareSerial MBSerial = Serial; ///< Pointer to Serial class object
+HardwareSerial MBSerial = Serial1; ///< Pointer to Serial class object
 
 
 /* _____PUBLIC FUNCTIONS_____________________________________________________ */
