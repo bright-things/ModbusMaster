@@ -34,7 +34,7 @@ Arduino library for communicating with Modbus slaves over RS232/485 (via RTU pro
 
 /* _____GLOBAL VARIABLES_____________________________________________________ */
 HardwareSerial MBSerial = Serial1; ///< Pointer to Serial class object
-
+#define RTS 2
 
 /* _____PUBLIC FUNCTIONS_____________________________________________________ */
 /**
@@ -136,7 +136,7 @@ void ModbusMaster::begin(uint16_t u16BaudRate)
       
     case 0:
     default:
-      MBSerial = Serial;
+      MBSerial = Serial1;
       break;
   }
   
@@ -744,6 +744,7 @@ uint8_t ModbusMaster::ModbusMasterTransaction(uint8_t u8MBFunction)
   u8ModbusADU[u8ModbusADUSize] = 0;
   
   // transmit request
+  digitalWrite(RTS,HIGH);
   for (i = 0; i < u8ModbusADUSize; i++)
   {
 #if defined(ARDUINO) && ARDUINO >= 100
@@ -755,7 +756,7 @@ uint8_t ModbusMaster::ModbusMasterTransaction(uint8_t u8MBFunction)
   
   u8ModbusADUSize = 0;
   MBSerial.flush();
-  
+  digitalWrite(RTS,LOW);
   // loop until we run out of time or bytes, or an error occurs
   u32StartTime = millis();
   while (u8BytesLeft && !u8MBStatus)
